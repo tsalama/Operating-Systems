@@ -1,0 +1,89 @@
+/*
+ * thread_test.c
+ *
+ *  Tarek Salama | February 5, 2017
+ *  CSE 330
+ *
+ */
+
+#include "threads.h"
+#include <stdbool.h>
+
+int global = 0;
+
+void FunctionOne();
+void FunctionTwo();
+void FunctionThree();
+
+int main() {
+	// Initialize RunQ
+	RunQ = NewItem();
+	InitQueue(&RunQ);
+
+	// Start threads
+	start_thread(&FunctionOne);
+	start_thread(&FunctionTwo);
+	start_thread(&FunctionThree);
+	start_thread(&FunctionFour);
+
+	// Call run() and watch
+	run();
+
+	return 0;
+}
+
+void FunctionOne() {
+	int local = 0;
+
+	while (true) {
+		printf("Function One\tLocal Variable: %d\tGlobal Variable: %d\n", local, global);
+
+		local++;
+		global++;
+		sleep(1);
+
+		yield();
+	}
+}
+
+void FunctionTwo() {
+	int local = 0;
+
+	while (true) {
+		printf("Function Two\tLocal Variable: %d\tGlobal Variable: %d\n", local, global);
+
+		local++;
+		global++;
+		sleep(1);
+
+		yield();
+	}
+}
+
+void FunctionThree() {
+	int local = 0;
+
+	while (true) {
+		printf("Function Three\tLocal Variable: %d\tGlobal Variable: %d\n", local, global);
+
+		local++;
+		global++;
+		sleep(1);
+
+		yield();
+	}
+}
+
+void FunctionFour() {
+	int local = 0;
+
+	while (true) {
+		printf("Function Four\tLocal Variable: %d\tGlobal Variable: %d\n", local, global);
+
+		local++;
+		global++;
+		sleep(1);
+
+		yield();
+	}
+}

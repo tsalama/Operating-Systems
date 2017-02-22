@@ -1,0 +1,68 @@
+/*
+ * q.h
+ *
+ *  Tarek Salama | February 5, 2017
+ *  CSE 330
+ *
+ */
+
+#ifndef Q_H_
+#define Q_H_
+
+#include "TCB.h"
+#include <stdlib.h>
+
+TCB_t *NewItem();
+void InitQueue(TCB_t **head);
+void AddQueue(TCB_t **head, TCB_t *item);
+TCB_t *DelQueue(TCB_t **head);
+void RotateQ(TCB_t **head);
+
+TCB_t* NewItem(void){
+    TCB_t *newItem = malloc(sizeof(TCB_t));
+//    init_TCB(newItem,NULL, NULL, 0);
+    return newItem;
+}
+
+void InitQueue(TCB_t **head){
+    (*head)= NULL;
+
+};
+
+void AddQueue(TCB_t **head, TCB_t *item){
+    TCB_t *current = malloc(sizeof(TCB_t));
+    current = (*head);
+
+    if(*head == NULL){
+        (*head) = item;
+        item->next = item;
+        item->prev = item;
+    }
+    else{
+        (*head)->prev->next = item;
+        item->next = (*head);
+        item->prev = (*head)->prev;
+        (*head)->prev = item;
+
+    }
+
+};
+
+TCB_t* DelQueue(TCB_t **head){
+    TCB_t *delItem = malloc(sizeof(TCB_t));
+    delItem = (*head);
+
+    (*head) = (*head)->next;
+    (*head)->prev = delItem->prev;
+    delItem->prev->next = (*head);
+
+    return  delItem;
+};
+
+void RotateQ(TCB_t **head){
+    TCB_t *tempHead = malloc(sizeof(TCB_t));
+    tempHead = (*head);
+    (*head) = tempHead->next;
+};
+
+#endif /* Q_H_ */

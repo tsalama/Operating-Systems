@@ -1,0 +1,13 @@
+17:03:33 **** Incremental Build of configuration Debug for project P1 ****
+Info: Internal Builder is used for build
+gcc -O0 -g3 -Wall -c -fmessage-length=0 -o thread_test.o "..\\thread_test.c" 
+In file included from ..\q.h:12:0,
+                 from ..\threads.h:12,
+                 from ..\thread_test.c:9:
+..\TCB.h:12:22: fatal error: ucontext.h: No such file or directory
+ #include <ucontext.h>
+                      ^
+compilation terminated.
+
+17:03:34 Build Finished (took 274ms)
+

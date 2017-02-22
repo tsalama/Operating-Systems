@@ -1,0 +1,63 @@
+/*
+ * threads.h
+ *
+ *  Tarek Salama | February 5, 2017
+ *  CSE 330
+ *
+ */
+
+#ifndef THREADS_H_
+#define THREADS_H_
+
+#include "q.h"
+#include <stdio.h>
+
+TCB_t *RunQ;
+
+void start_thread(void (*function)(void));
+void run();
+void yield();
+
+void start_thread(void (*function)(void)) {
+
+    // allocate a stack (via malloc) of a certain size (choose 8192)
+    void *stack = malloc(sizeof(8192));
+
+    // allocate a TCB (via malloc)
+    TCB_t *tcbAlloc = malloc(sizeof(TCB_t));
+
+    // call init_TCB with appropriate arguments
+    init_TCB(tcbAlloc,function,stack,8192);
+
+    // call addQ to add this TCB into the “RunQ” which is a global header pointer
+    addQueue(&RunQ, tcbAlloc);
+
+}
+
+
+void run(){
+
+    //get a place to store the main context, for faking
+    ucontext_t parent;
+
+    //magic sauce
+    getcontext(&parent);
+
+    //start the first thread
+    swapcontext(&parent, &(RunQ->context));
+}
+
+void yield(){
+
+    //rorate the Run Q
+    TCB_t *prevRunQ = RunQ;
+    TCB_t *newRunQ;
+    rotateQueue(&RunQ);
+
+    //swap the context, from previous thread to the thread pointed to by RunQ
+    newRunQ = RunQ;
+    swapcontext(&(prevRunQ->context), &(newRunQ->context));
+
+}
+
+#endif /* THREADS_H_ */

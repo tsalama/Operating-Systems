@@ -1,0 +1,70 @@
+/*
+ * q.h
+ *
+ *  Tarek Salama | February 5, 2017
+ *  CSE 330
+ *
+ */
+
+#ifndef Q_H_
+#define Q_H_
+
+#include "TCB.h"
+#include <stdlib.h>
+
+TCB_t * Queue;
+
+TCB_t * NewItem();
+void InitQueue(TCB_t **);
+void AddQueue(TCB_t **, TCB_t **);
+TCB_t * DelQueue(TCB_t **);
+void RotateQ(TCB_t **);
+
+void pushDown(TCB_t ** curr, TCB_t ** addItem) {
+	if ((*curr)->next == NULL) {
+		(*curr)->next = *addItem;
+	} else {
+		pushDown(&((*curr)->next), addItem);
+	}
+}
+
+TCB_t * NewItem() {
+  TCB_t * newItem = (TCB_t *) malloc(sizeof(TCB_t));
+  return newItem;
+}
+
+void InitQueue(TCB_t ** root) {
+	*root = NULL;
+}
+
+void AddQueue(TCB_t ** root, TCB_t ** addItem) {
+	if (*root == NULL) {
+		*root = *addItem;
+	} else {
+		pushDown(root, addItem);
+	}
+}
+
+TCB_t * DelQueue(TCB_t ** root) {
+	TCB_t * deleteItem = *root;
+
+  if ((*root)->next != NULL) {
+    (*root)->next->prev = NULL;
+  }
+  *root = (*root)->next;
+
+	return deleteItem;
+}
+
+void RotateQ(TCB_t ** root) {
+	TCB_t * prevRoot = *root;
+
+  if ((*root)->next != NULL) {
+		(*root)->next->prev = NULL;
+		*root = (*root)->next;
+		prevRoot->next = NULL;
+		pushDown(root, &prevRoot);
+	}
+}
+
+#endif /* Q_H_ */

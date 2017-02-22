@@ -1,0 +1,77 @@
+//
+//  q.h
+//  cse330_proj1
+//
+//  Created by Robert Logan on 1/27/17.
+//  Copyright © 2017 Robert Logan. All rights reserved.
+//
+
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+#include <stdbool.h>
+
+#include "tcb.h"
+
+
+
+TCB_t* NewItem(void){
+    TCB_t *newItem = malloc(sizeof(TCB_t));
+//    init_TCB(newItem,NULL, NULL, 0);
+    return newItem;
+}
+
+void InitQueue(TCB_t **head){
+    (*head)= NULL;
+
+};
+
+void AddQueue(TCB_t **head, TCB_t *item){
+    TCB_t *current = malloc(sizeof(TCB_t));
+    current = (*head);
+
+    if(*head == NULL){
+        (*head) = item;
+        item->next = item;
+        item->prev = item;
+    }
+    else{
+        (*head)->prev->next = item;
+        item->next = (*head);
+        item->prev = (*head)->prev;
+        (*head)->prev = item;
+
+    }
+
+};
+
+TCB_t* DelQueue(TCB_t **head){
+    TCB_t *delItem = malloc(sizeof(TCB_t));
+    delItem = (*head);
+
+    (*head) = (*head)->next;
+    (*head)->prev = delItem->prev;
+    delItem->prev->next = (*head);
+
+    return  delItem;
+};
+
+void RotateQ(TCB_t **head){
+    TCB_t *tempHead = malloc(sizeof(TCB_t));
+    tempHead = (*head);
+    (*head) = tempHead->next;
+};
+
+//void display(TCB_t **head){
+//    int count = 0;
+//    if((*head) == NULL){
+//        return;
+//    }
+//    do{
+//        RotateQ(head);
+//        printf( "%d \n" , (*head)->payload);
+//        count++;
+//    }while (count <= 3);
+//}
+
+
